@@ -26,7 +26,13 @@ var VideoList = (properties) => (
   <div className="video-list media">
     {
       properties.videos.map(function(element, index)  {
-        return <VideoListEntry index={index} myClick={properties.myClick} video={properties.videos[index]} />
+        return <VideoListEntry 
+                  index={index} 
+                  myClick={properties.myClick} 
+                  thumbnail={properties.videos[index].snippet.thumbnails.default.url} 
+                  description={properties.videos[index].snippet.description}  
+                  title={properties.videos[index].snippet.title} 
+                />
       })
     }
    
