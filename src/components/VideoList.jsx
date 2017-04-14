@@ -29,9 +29,7 @@ var VideoList = (properties) => (
         return <VideoListEntry 
                   index={index} 
                   myClick={properties.myClick} 
-                  thumbnail={properties.videos[index].snippet.thumbnails.default.url} 
-                  description={properties.videos[index].snippet.description}  
-                  title={properties.videos[index].snippet.title} 
+                  video={properties.videos[index]}
                 />
       })
     }

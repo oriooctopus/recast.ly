@@ -1,28 +1,40 @@
-// var App = () => (
-//   <div>
-//     <Nav />
-//     <div className="col-md-7">
-//       <VideoPlayer video={exampleVideoData[0]}/>
-//     </div>
-//     <div className="col-md-5">
-//       <VideoList videos={exampleVideoData}/>
-//     </div>
-//   </div>
-// );
-
 class App extends React.Component {
-	constructor() {
-		super();
-
+	constructor(props) {
+		super(props);
 		this.state = {
-			currentVideo: exampleVideoData[0]
+			videoData: [],
+			currentVideo: exampleVideoData[0],
+			shouldAutoplay: 0
 		};
 	}
 
-  onClickFunction(elementClicked) {
-  	this.setState({
-  		currentVideo: exampleVideoData[elementClicked]
-  	});
+	componentDidMount() {
+	  this.changeVideoData('')
+	}
+
+  changeVideo(elementClicked) {
+	  this.setState({
+		  currentVideo: this.state.videoData[elementClicked]
+	  });
+  }
+
+  toggleAutoplay() {
+    this.setState({
+    	shouldAutoplay: (this.state.shouldAutoplay) ? 0 : 1
+    })
+    console.log(this.state.shouldAutoplay);
+  }
+
+  changeVideoData(searchValue) {
+
+  	this.props.searchYouTube( { key: YOUTUBE_API_KEY, query: searchValue, max: 10, autoplay: this.state.shouldAutoplay }, 
+										(data) => {
+											this.setState({
+												videoData: data,
+												currentVideo: data[0]
+											})
+										})
+		
   }
 
 	render() {
@@ -30,12 +42,12 @@ class App extends React.Component {
 		return (
 
 			<div>
-		    <Nav />
+		    <Nav changeVideoData={this.changeVideoData.bind(this)} toggleAutoplay={this.toggleAutoplay.bind(this)} />
 		    <div className="col-md-7">
-		      <VideoPlayer video={this.state.currentVideo}/>
+		      <VideoPlayer video={this.state.currentVideo} shouldAutoplay={this.state.shouldAutoplay} />
 		    </div>
 		    <div className="col-md-5">
-		      <VideoList myClick={this.onClickFunction.bind(this)} videos={exampleVideoData}/>
+		      <VideoList myClick={this.changeVideo.bind(this)} videos={this.state.videoData}/>
 		    </div>
 		  </div>
 
